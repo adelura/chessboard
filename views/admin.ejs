@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+	<title>Chess leader board - admin</title>
+	<link rel="stylesheet" href="/vendor/semantic/dist/semantic.css">
+</head>
+<body>
+<div class="ui raised very padded text container">
+	<h1>Chess leader board - admin</h1>
+
+	<h2>Add player</h2>
+	<form class="ui form" method="post" action="users">
+		<div class="field">
+			<label>Name</label>
+			<input type="text" name="name" placeholder="Name">
+		</div>
+		<button class="ui button" type="submit">Submit</button>
+	</form>
+
+	<div class="ui divider"></div>
+
+	<h2>Add game</h2>
+	<form class="ui form" method="post" action="games">
+		<div class="field">
+			<label>Player one (white)</label>
+			<select name="player.white">
+				<% users.forEach(function (user) { %>
+				<option value="<%= user.id %>"><%= user.name %> (<%= user.points %>)</option>
+				<% }) %>
+			</select>
+		</div>
+
+		<div class="field">
+			<label>Player two (black)</label>
+			<select name="player.black">
+				<% users.forEach(function (user) { %>
+				<option value="<%= user.id %>"><%= user.name %> (<%= user.points %>)</option>
+				<% }) %>
+			</select>
+		</div>
+
+		<div class="field">
+			<label>Winner</label>
+			<select name="winner">
+				<option value="white">Whites</option>
+				<option value="black">Blacks</option>
+				<option value="draw">Draw</option>
+			</select>
+		</div>
+
+		<button class="ui button" type="submit">Submit</button>
+	</form>
+</div>
+</body>
+</html>

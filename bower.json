@@ -1,0 +1,22 @@
+{
+  "name": "chessboard",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Artur Delura"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "semantic": "semantic-ui#~2.1.8"
+  }
+}

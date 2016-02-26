@@ -1,0 +1,5 @@
+node_modules
+public/vendor
+db.json
+secret.json
+users.htpasswd
