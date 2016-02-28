@@ -4,9 +4,9 @@ module.exports = function (grunt) {
 		env = env || 'production';
 
 		var config = {
-			"name": "chessleaderboard",
+			"name": "chessboard",
 			"port": 5000,
-			"appDir": "../home/ubuntu/chessleaderboard/"
+			"appDir": "../home/ubuntu/chessboard/"
 		};
 
 		// Project configuration.
@@ -18,7 +18,7 @@ module.exports = function (grunt) {
 
 		var commandsUpdate = [
 			'git fetch --all',
-			'git checkout mater',
+			'git checkout master',
 			'git reset --hard origin/master',
 			'npm i',
 			'bower i --allow-root'
