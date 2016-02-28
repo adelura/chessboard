@@ -1,0 +1,38 @@
+extends ./template.jade
+
+block content
+	h1 Chess leader board - admin
+
+	h2 Add player
+	form.ui.form(method="post" action="/users")
+		.field
+			label Name
+			input(type="text" name="name" placeholder="Name")
+		button.ui.button(type="submit") Submit
+
+	.ui.divider
+
+	h2 Add game
+	form.ui.form(method="post" action="/games")
+		.field
+			label Player one (white)
+			select(name="player.white")
+				each user in users
+					option(value=user.id)= user.name + ' (' + user.points + ')'
+
+		.field
+			label Player two (black)
+			select(name="player.black")
+				each user in users
+					option(value=user.id)= user.name + ' (' + user.points + ')'
+
+		.field
+			label Winner
+			select(name="winner")
+				option(value="white") Whites
+				option(value="black") Blacks
+				option(value="draw") Draw
+
+		button.ui.button(type="submit") Submit
+
+

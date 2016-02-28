@@ -1,0 +1,15 @@
+extends ./template.jade
+
+block content
+	h1 Chess leader board
+
+	table.ui.inverted.brown.table
+		thead
+			tr
+				th Players
+				th Points
+		tbody
+			each user in users
+				tr
+					td= user.name
+					td= user.points

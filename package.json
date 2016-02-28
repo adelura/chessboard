@@ -11,9 +11,9 @@
   "dependencies": {
     "arpad": "^0.1.2",
     "body-parser": "^1.15.0",
-    "ejs": "^2.4.1",
     "express": "^4.13.4",
     "http-auth": "^2.2.8",
+    "jade": "^1.11.0",
     "json-server": "^0.8.8",
     "lodash": "^4.5.1"
   },

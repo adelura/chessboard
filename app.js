@@ -26,7 +26,7 @@ router.get('/', function(req, res) {
 		.reverse()
 		.value();
 
-	res.render('index.ejs', {
+	res.render('index.jade', {
 		users: users
 	});
 });
@@ -34,7 +34,7 @@ router.get('/', function(req, res) {
 router.get('/admin', function(req, res) {
 	var users = db('users').value();
 
-	res.render('admin.ejs', {
+	res.render('admin.jade', {
 		users: users
 	});
 });
@@ -95,7 +95,7 @@ router.post('/games', function (req, res, next) {
 
 var app = express();
 
-app.set('view engine', 'ejs');
+app.set('view engine', 'jade');
 
 app.use(jsonServer.defaults());
 app.use(router);
