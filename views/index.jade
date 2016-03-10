@@ -1,7 +1,7 @@
 extends ./template.jade
 
 block content
-	h1 Chess leader board
+	h1 Chess Leader Board
 
 	table.ui.inverted.brown.table
 		thead
@@ -26,11 +26,19 @@ block content
 				th (+/-)
 		tbody
 			each game in games
-				- pwhite = users.filter(function(o) { return o.id == game.players.white } )[0]
-				- pblack = users.filter(function(o) { return o.id == game.players.black } )[0]
+				- pwhite = users.find(function(o) { return o.id == game.players.white } )
+				- pblack = users.find(function(o) { return o.id == game.players.black } )
 				tr
-					td= pwhite.name
+					td
+						if game.winner == 'white'
+							i.trophy.icon
+						= pwhite.name
+
 					td= (game.change.white > 0 ? '+' : '') + game.change.white
 					td= game.winner[0]
-					td= pblack.name
+					td
+						if game.winner == 'black'
+							i.trophy.icon
+						= pblack.name
+
 					td= (game.change.black > 0 ? '+' : '') + game.change.black
