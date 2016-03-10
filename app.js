@@ -26,8 +26,15 @@ router.get('/', function(req, res) {
 		.reverse()
 		.value();
 
+	var games = db('games')
+		.chain()
+		.sortBy('id')
+		.reverse()
+		.value();
+
 	res.render('index.jade', {
-		users: users
+		users: users,
+		games: games
 	});
 });
 
@@ -90,7 +97,9 @@ router.post('/games', function (req, res, next) {
 	winner.points = winnerNewPoints;
 	loser.points = loserNewPoints;
 
-	next();
+	db('games').push(req.body);
+
+	res.redirect('/');
 });
 
 var app = express();
