@@ -32,6 +32,29 @@ router.get('/', function(req, res) {
 		.reverse()
 		.value();
 
+	users.forEach(function(user) {
+		user.played = 0;
+		user.won = 0;
+		user.drawn = 0;
+		user.lost = 0;
+
+		games.forEach(function(game) {
+			if (game.players.white == user.id || game.players.black == user.id) {
+				user.played += 1;
+
+				if (game.winner == 'white' && game.players.white == user.id || game.winner == 'black' && game.players.black == user.id) {
+					user.won += 1;
+
+				} else if (game.winner == 'white' && game.players.black == user.id || game.winner == 'black' && game.players.white == user.id) {
+					user.lost += 1;
+
+				} else {
+					user.drawn += 1;
+				}
+			}
+		});
+	});
+
 	res.render('index.jade', {
 		users: users,
 		games: games

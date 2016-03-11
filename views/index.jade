@@ -8,11 +8,19 @@ block content
 			tr
 				th Players
 				th Points
+				th Played
+				th Won
+				th Drawn
+				th Lost
 		tbody
 			each user in users
 				tr
 					td= user.name
 					td= user.points
+					td= user.played
+					td= user.won
+					td= user.drawn
+					td= user.lost
 
 	h2 Matches Played
 
