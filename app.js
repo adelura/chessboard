@@ -19,6 +19,21 @@ router.use(auth.connect(basic));
 router.use(bodyParser.json({limit: '10mb'}));
 router.use(bodyParser.urlencoded({ extended: false }));
 
+// functions
+function userPlayedGame(user, game) {
+	return game.players.white == user.id || game.players.black == user.id;
+}
+
+function userWonGame(user, game) {
+	return game.winner == 'white' && game.players.white == user.id || game.winner == 'black' && game.players.black == user.id;
+}
+
+function userLostGame(user, game) {
+	return game.winner == 'white' && game.players.black == user.id || game.winner == 'black' && game.players.white == user.id;
+}
+
+
+// routes
 router.get('/', function(req, res) {
 	var users = db('users')
 		.chain()
@@ -39,13 +54,13 @@ router.get('/', function(req, res) {
 		user.lost = 0;
 
 		games.forEach(function(game) {
-			if (game.players.white == user.id || game.players.black == user.id) {
+			if (userPlayedGame(user, game)) {
 				user.played += 1;
 
-				if (game.winner == 'white' && game.players.white == user.id || game.winner == 'black' && game.players.black == user.id) {
+				if (userWonGame(user, game)) {
 					user.won += 1;
 
-				} else if (game.winner == 'white' && game.players.black == user.id || game.winner == 'black' && game.players.white == user.id) {
+				} else if (userLostGame(user, game)) {
 					user.lost += 1;
 
 				} else {
