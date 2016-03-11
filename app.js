@@ -20,6 +20,12 @@ router.use(bodyParser.json({limit: '10mb'}));
 router.use(bodyParser.urlencoded({ extended: false }));
 
 // functions
+function findUserById(userId) {
+	return db('users').find(function (user) {
+		return user.id == userId;
+	});
+}
+
 function userPlayedGame(user, game) {
 	return game.players.white == user.id || game.players.black == user.id;
 }
@@ -54,11 +60,6 @@ router.get('/', function(req, res) {
 		.reverse()
 		.value();
 
-	games.forEach(function(game) {
-		if (game.createdDate != null) {
-			game.createdDate = formatDate(new Date(game.createdDate));
-		}
-	});
 
 	users.forEach(function(user) {
 		user.played = 0;
@@ -82,6 +83,28 @@ router.get('/', function(req, res) {
 			}
 		});
 	});
+
+
+	games.forEach(function(game) {
+		if (game.createdDate != null) {
+			game.createdDate = formatDate(new Date(game.createdDate));
+		}
+	});
+
+
+	if (req.query.userId != null) {
+		var currentUser = findUserById(req.query.userId);
+
+		var filteredGames = new Array();
+		games.forEach(function(game) {
+			if (userPlayedGame(currentUser, game)) {
+				filteredGames.push(game);
+			}
+		});
+
+		games = filteredGames;
+	}
+
 
 	res.render('index.jade', {
 		users: users,
@@ -129,13 +152,8 @@ router.post('/games', function (req, res, next) {
 	var winnerId = req.body.players[winnerColor];
 	var loserId = req.body.players[loserColor];
 
-	var winner = db('users').find(function (user) {
-		return user.id == winnerId;
-	});
-
-	var loser = db('users').find(function (user) {
-		return user.id == loserId;
-	});
+	var winner = findUserById(winnerId);
+	var loser = findUserById(loserId);
 
 	if (isDraw) {
 		var winnerNewPoints = elo.newRatingIfTied(winner.points, loser.points);

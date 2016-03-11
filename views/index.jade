@@ -17,7 +17,8 @@ block content
 				tr
 					td= user.name
 					td= user.points
-					td= user.played
+					td
+						a(href='/?userId=' + user.id) #{user.played}
 					td= user.won
 					td= user.drawn
 					td= user.lost
