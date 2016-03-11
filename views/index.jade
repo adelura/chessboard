@@ -27,6 +27,7 @@ block content
 	table.ui.inverted.green.table
 		thead
 			tr
+				th Date
 				th White
 				th (+/-)
 				th Result
@@ -37,6 +38,7 @@ block content
 				- pwhite = users.find(function(o) { return o.id == game.players.white } )
 				- pblack = users.find(function(o) { return o.id == game.players.black } )
 				tr
+					td= game.createdDate
 					td
 						if game.winner == 'white'
 							i.trophy.icon

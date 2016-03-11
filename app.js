@@ -32,6 +32,13 @@ function userLostGame(user, game) {
 	return game.winner == 'white' && game.players.black == user.id || game.winner == 'black' && game.players.white == user.id;
 }
 
+function formatDate(date) {
+	return 	('00' + date.getDate()).slice(-2) + '/' +
+			('00' + (date.getMonth() + 1)).slice(-2) + '/' +
+			date.getFullYear() + ' ' +
+	       	('00' + date.getHours()).slice(-2) + ':' +
+	       	('00' + date.getMinutes()).slice(-2);
+}
 
 // routes
 router.get('/', function(req, res) {
@@ -46,6 +53,12 @@ router.get('/', function(req, res) {
 		.sortBy('id')
 		.reverse()
 		.value();
+
+	games.forEach(function(game) {
+		if (game.createdDate != null) {
+			game.createdDate = formatDate(new Date(game.createdDate));
+		}
+	});
 
 	users.forEach(function(user) {
 		user.played = 0;
