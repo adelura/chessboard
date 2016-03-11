@@ -48,10 +48,15 @@ router.get('/admin', function(req, res) {
 
 router.post('/users', function (req, res, next) {
 	req.body.points = 1000;
-	next();
+	req.body.createdDate = new Date();
+
+	db('users').insert(req.body);
+
+    res.redirect('/');
 });
 
 router.post('/games', function (req, res, next) {
+	req.body.createdDate = new Date();
 	req.body.players = {
 		white: Number(req.body['player.white']),
 		black: Number(req.body['player.black'])
@@ -97,7 +102,7 @@ router.post('/games', function (req, res, next) {
 	winner.points = winnerNewPoints;
 	loser.points = loserNewPoints;
 
-	db('games').push(req.body);
+	db('games').insert(req.body);
 
 	res.redirect('/');
 });
