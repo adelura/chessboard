@@ -39,7 +39,7 @@ block content
 				- pwhite = users.find(function(o) { return o.id == game.players.white } )
 				- pblack = users.find(function(o) { return o.id == game.players.black } )
 				tr
-					td= game.createdDate
+					td= dateFormat(game.createdDate)
 					td
 						if game.winner == 'white'
 							i.trophy.icon

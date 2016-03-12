@@ -2,7 +2,8 @@ var jsonServer = require('json-server'),
 	bodyParser = require('body-parser'),
 	express = require('express'),
 	elo = new (require('arpad'))(),
-	auth = require('http-auth');
+	auth = require('http-auth'),
+	dateFormat = require('dateFormat');
 
 var basic = auth.basic({
 	realm: "Who are you?",
@@ -36,14 +37,6 @@ function userWonGame(user, game) {
 
 function userLostGame(user, game) {
 	return game.winner == 'white' && game.players.black == user.id || game.winner == 'black' && game.players.white == user.id;
-}
-
-function formatDate(date) {
-	return 	('00' + date.getDate()).slice(-2) + '/' +
-			('00' + (date.getMonth() + 1)).slice(-2) + '/' +
-			date.getFullYear() + ' ' +
-	       	('00' + date.getHours()).slice(-2) + ':' +
-	       	('00' + date.getMinutes()).slice(-2);
 }
 
 // routes
@@ -84,14 +77,6 @@ router.get('/', function(req, res) {
 		});
 	});
 
-
-	games.forEach(function(game) {
-		if (game.createdDate != null) {
-			game.createdDate = formatDate(new Date(game.createdDate));
-		}
-	});
-
-
 	if (req.query.userId != null) {
 		var currentUser = findUserById(req.query.userId);
 
@@ -120,17 +105,17 @@ router.get('/admin', function(req, res) {
 	});
 });
 
-router.post('/users', function (req, res, next) {
+router.post('/users', function (req, res) {
 	req.body.points = 1000;
-	req.body.createdDate = new Date();
+	req.body.createdDate = Date.now();
 
 	db('users').insert(req.body);
 
     res.redirect('/');
 });
 
-router.post('/games', function (req, res, next) {
-	req.body.createdDate = new Date();
+router.post('/games', function (req, res) {
+	req.body.createdDate = Date.now();
 	req.body.players = {
 		white: Number(req.body['player.white']),
 		black: Number(req.body['player.black'])
@@ -183,6 +168,8 @@ app.set('view engine', 'jade');
 app.use(jsonServer.defaults());
 app.use(router);
 app.use(jsonRouter);
+
+app.locals.dateFormat = dateFormat;
 
 app.listen(5000);
 console.log('Server listening on port', 5000);
