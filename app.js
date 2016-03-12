@@ -5,7 +5,7 @@ var jsonServer = require('json-server'),
 	express = require('express'),
 	elo = new (require('arpad'))(),
 	auth = require('http-auth'),
-	dateFormat = require('dateFormat');
+	dateformat = require('dateformat');
 
 var basic = auth.basic({
 	realm: "Who are you?",
@@ -163,7 +163,7 @@ app.use(jsonServer.defaults());
 app.use(router);
 app.use(jsonRouter);
 
-app.locals.dateFormat = dateFormat;
+app.locals.dateformat = dateformat;
 
 app.listen(5000);
 console.log('Server listening on port', 5000);
