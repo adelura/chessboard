@@ -45,7 +45,9 @@ block content
 				- pwhite = users.find(user => { return user.id == game.players.white; } )
 				- pblack = users.find(user => { return user.id == game.players.black; } )
 				tr
-					td= dateformat(game.createdDate)
+					td
+						if (game.createdDate)
+							= dateformat(game.createdDate)
 					td
 						if game.winner == 'white'
 							i.trophy.icon
