@@ -12,18 +12,24 @@ block content
 				th Won
 				th Drawn
 				th Lost
+				th Games
 		tbody
 			each user in users
 				tr
 					td= user.name
 					td= user.points
-					td
-						a(href='/?userId=' + user.id) #{user.played}
+					td= user.played
 					td= user.won
 					td= user.drawn
 					td= user.lost
+					td
+						a.mini.ui.button(href='/?userId=' + user.id)= 'View'
 
-	h2 Matches Played
+	h2
+		= 'Matches Played'
+		if filteredUser
+			= ` (for player ${filteredUser.name}) `
+			a.ui.button(href='/')= 'Clear filter'
 
 	table.ui.inverted.green.table
 		thead
@@ -36,8 +42,8 @@ block content
 				th (+/-)
 		tbody
 			each game in games
-				- pwhite = users.find(function(o) { return o.id == game.players.white } )
-				- pblack = users.find(function(o) { return o.id == game.players.black } )
+				- pwhite = users.find(user => { return user.id == game.players.white; } )
+				- pblack = users.find(user => { return user.id == game.players.black; } )
 				tr
 					td= dateFormat(game.createdDate)
 					td
@@ -53,3 +59,10 @@ block content
 						= pblack.name
 
 					td= (game.change.black > 0 ? '+' : '') + game.change.black
+
+			if !games.length
+				tr
+					td.ui.center.aligned(colspan=6)
+						i.big.meh.icon
+						br
+						= 'This player has not played any games yet'

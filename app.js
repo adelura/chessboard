@@ -1,3 +1,5 @@
+'use strict';
+
 var jsonServer = require('json-server'),
 	bodyParser = require('body-parser'),
 	express = require('express'),
@@ -76,7 +78,7 @@ router.get('/', function(req, res) {
 	});
 
 	if (req.query.userId != null) {
-		let currentUser = findUserById(req.query.userId);
+		var currentUser = findUserById(req.query.userId);
 
 		games = games.filter(game => {
 			return userPlayedGame(currentUser, game);
@@ -86,7 +88,8 @@ router.get('/', function(req, res) {
 
 	res.render('index.jade', {
 		users: users,
-		games: games
+		games: games,
+		filteredUser: currentUser
 	});
 });
 
