@@ -20,7 +20,6 @@ router.use(auth.connect(basic));
 router.use(bodyParser.json({limit: '10mb'}));
 router.use(bodyParser.urlencoded({ extended: false }));
 
-// functions
 function findUserById(userId) {
 	return db('users').find(function (user) {
 		return user.id == userId;
@@ -49,45 +48,39 @@ router.get('/', function(req, res) {
 
 	var games = db('games')
 		.chain()
-		.sortBy('id')
+		.sortBy('createdDate')
 		.reverse()
 		.value();
 
 
 	users.forEach(function(user) {
-		user.played = 0;
-		user.won = 0;
-		user.drawn = 0;
-		user.lost = 0;
+		user.played = user.won = user.drawn = user.lost = 0;
 
 		games.forEach(function(game) {
-			if (userPlayedGame(user, game)) {
-				user.played += 1;
+			if (!userPlayedGame(user, game)) {
+				return;
+			}
 
-				if (userWonGame(user, game)) {
-					user.won += 1;
+			user.played += 1;
 
-				} else if (userLostGame(user, game)) {
-					user.lost += 1;
+			if (userWonGame(user, game)) {
+				user.won += 1;
 
-				} else {
-					user.drawn += 1;
-				}
+			} else if (userLostGame(user, game)) {
+				user.lost += 1;
+
+			} else {
+				user.drawn += 1;
 			}
 		});
 	});
 
 	if (req.query.userId != null) {
-		var currentUser = findUserById(req.query.userId);
+		let currentUser = findUserById(req.query.userId);
 
-		var filteredGames = new Array();
-		games.forEach(function(game) {
-			if (userPlayedGame(currentUser, game)) {
-				filteredGames.push(game);
-			}
+		games = games.filter(game => {
+			return userPlayedGame(currentUser, game);
 		});
-
-		games = filteredGames;
 	}
 
 
@@ -98,10 +91,8 @@ router.get('/', function(req, res) {
 });
 
 router.get('/admin', function(req, res) {
-	var users = db('users').value();
-
 	res.render('admin.jade', {
-		users: users
+		users: db('users').value()
 	});
 });
 
@@ -111,7 +102,7 @@ router.post('/users', function (req, res) {
 
 	db('users').insert(req.body);
 
-    res.redirect('/');
+	res.redirect('/');
 });
 
 router.post('/games', function (req, res) {
