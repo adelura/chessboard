@@ -6,6 +6,7 @@ block content
 	table.ui.inverted.brown.table
 		thead
 			tr
+				th Place
 				th Players
 				th Points
 				th Played
@@ -14,8 +15,13 @@ block content
 				th Lost
 				th Games
 		tbody
-			each user in users
+			- place = 0
+			each user, index in users
+				- prevUser = users[index - 1]
+				- prevUserPoints = prevUser ? prevUser.points : null
+
 				tr
+					td= user.points == prevUserPoints ? '' : ++place
 					td= user.name
 					td= user.points
 					td= user.played
@@ -34,6 +40,7 @@ block content
 	table.ui.inverted.green.table
 		thead
 			tr
+				th #
 				th Date
 				th White
 				th (+/-)
@@ -41,10 +48,11 @@ block content
 				th Black
 				th (+/-)
 		tbody
-			each game in games
+			each game, index in games
 				- pwhite = users.find(user => user.id == game.players.white )
 				- pblack = users.find(user => user.id == game.players.black )
 				tr
+					td= games.length - index
 					td
 						if (game.createdDate)
 							= dateformat(game.createdDate, 'ddd, mmm dS, yyyy')
