@@ -23,9 +23,7 @@ router.use(bodyParser.json({limit: '10mb'}));
 router.use(bodyParser.urlencoded({ extended: false }));
 
 function findUserById(userId) {
-	return db('users').find(function (user) {
-		return user.id == userId;
-	});
+	return db('users').find(user => user.id == userId);
 }
 
 function userPlayedGame(user, game) {
@@ -41,7 +39,7 @@ function userLostGame(user, game) {
 }
 
 // routes
-router.get('/', function(req, res) {
+router.get('/', (req, res) => {
 	var users = db('users')
 		.chain()
 		.sortBy('points')
@@ -55,10 +53,10 @@ router.get('/', function(req, res) {
 		.value();
 
 
-	users.forEach(function(user) {
+	users.forEach(user => {
 		user.played = user.won = user.drawn = user.lost = 0;
 
-		games.forEach(function(game) {
+		games.forEach(game => {
 			if (!userPlayedGame(user, game)) {
 				return;
 			}
@@ -80,9 +78,7 @@ router.get('/', function(req, res) {
 	if (req.query.userId != null) {
 		var currentUser = findUserById(req.query.userId);
 
-		games = games.filter(game => {
-			return userPlayedGame(currentUser, game);
-		});
+		games = games.filter(game => userPlayedGame(currentUser, game));
 	}
 
 
@@ -93,13 +89,13 @@ router.get('/', function(req, res) {
 	});
 });
 
-router.get('/admin', function(req, res) {
+router.get('/admin', (req, res) => {
 	res.render('admin.jade', {
 		users: db('users').value()
 	});
 });
 
-router.post('/users', function (req, res) {
+router.post('/users', (req, res) => {
 	req.body.points = 1000;
 	req.body.createdDate = Date.now();
 
@@ -108,7 +104,7 @@ router.post('/users', function (req, res) {
 	res.redirect('/');
 });
 
-router.post('/games', function (req, res) {
+router.post('/games', (req, res) => {
 	req.body.createdDate = Date.now();
 	req.body.players = {
 		white: Number(req.body['player.white']),

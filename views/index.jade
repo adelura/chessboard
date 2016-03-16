@@ -42,12 +42,12 @@ block content
 				th (+/-)
 		tbody
 			each game in games
-				- pwhite = users.find(user => { return user.id == game.players.white; } )
-				- pblack = users.find(user => { return user.id == game.players.black; } )
+				- pwhite = users.find(user => user.id == game.players.white )
+				- pblack = users.find(user => user.id == game.players.black )
 				tr
 					td
 						if (game.createdDate)
-							= dateformat(game.createdDate)
+							= dateformat(game.createdDate, 'ddd, mmm dS, yyyy')
 					td
 						if game.winner == 'white'
 							i.trophy.icon
