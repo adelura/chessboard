@@ -19,9 +19,10 @@ block content
 			each user, index in users
 				- prevUser = users[index - 1]
 				- prevUserPoints = prevUser ? prevUser.points : null
+				- userPlace = ++place
 
 				tr
-					td= user.points == prevUserPoints ? '' : ++place
+					td= user.points == prevUserPoints ? '' : userPlace
 					td= user.name
 					td= user.points
 					td= user.played
