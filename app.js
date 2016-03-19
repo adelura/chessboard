@@ -38,6 +38,10 @@ function userLostGame(user, game) {
 	return game.winner == 'white' && game.players.black == user.id || game.winner == 'black' && game.players.white == user.id;
 }
 
+function userDrewGame(user, game) {
+	return userPlayedGame(user, game) && !userWonGame(user, game) && !userLostGame(user, game);
+}
+
 // routes
 router.get('/', (req, res) => {
 	var users = db('users')
@@ -78,7 +82,20 @@ router.get('/', (req, res) => {
 	if (req.query.userId != null) {
 		var currentUser = findUserById(req.query.userId);
 
-		games = games.filter(game => userPlayedGame(currentUser, game));
+		if (req.query.type != null) {
+			if (req.query.type == 'win') {
+				games = games.filter(game => userWonGame(currentUser, game));
+
+			} else if (req.query.type == 'loss') {
+				games = games.filter(game => userLostGame(currentUser, game));
+
+			} else {
+				games = games.filter(game => userDrewGame(currentUser, game));
+			}
+
+		} else {
+			games = games.filter(game => userPlayedGame(currentUser, game));
+		}
 	}
 
 

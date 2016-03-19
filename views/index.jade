@@ -13,7 +13,6 @@ block content
 				th Won
 				th Drawn
 				th Lost
-				th Games
 		tbody
 			- place = 0
 			each user, index in users
@@ -24,13 +23,16 @@ block content
 				tr
 					td= user.points == prevUserPoints ? '' : userPlace
 					td= user.name
-					td= user.points
-					td= user.played
-					td= user.won
-					td= user.drawn
-					td= user.lost
 					td
-						a.mini.ui.button(href='/?userId=' + user.id)= 'View'
+						span(style={'font-weight': 'bold'}) #{user.points}
+					td
+						a(style={color: 'white', 'text-decoration': 'underline'}, href='/?userId=' + user.id) #{user.played}
+					td
+						a(style={color: 'white', 'text-decoration': 'underline'}, href='/?userId=' + user.id + '&type=win') #{user.won}
+					td
+						a(style={color: 'white', 'text-decoration': 'underline'}, href='/?userId=' + user.id + '&type=draw') #{user.drawn}
+					td
+						a(style={color: 'white', 'text-decoration': 'underline'}, href='/?userId=' + user.id + '&type=loss') #{user.lost}
 
 	h2
 		= 'Matches Played'
@@ -77,3 +79,5 @@ block content
 						i.big.meh.icon
 						br
 						= 'This player has not played any games yet'
+
+	div(style={'margin-bottom': '10px'})
